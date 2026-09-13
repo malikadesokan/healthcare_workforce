@@ -8,6 +8,7 @@ from variable import trust_name
 faker = Faker("en_GB")
 
 filename_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+batch_timestamp = datetime.now().date().strftime("%Y%m%d")
 
 NUMBER_OF_EMPLOYEES = 1200
 
@@ -128,19 +129,19 @@ bands = {
     "GP" : "GP"
 }
 
-salary_range = {
-    "2": (24000,28000),
-    "3": (26000,32000),
-    "4": (30000,38000),
-    "5": (37000,45000),
-    "6": (44000,55000),
-    "7": (52000,65000),
-    "8A": (55000,70000),
-    "FY1": (36000,42000),
-    "SHO": (45000,60000),
-    "SPR": (65000,85000),
-    "CONS": (95000,140000),
-    "GP": (90000,120000)
+rate_range = {
+    "2": (12.31, 14.36),
+    "3": (13.33, 16.41),
+    "4": (15.38, 19.49),
+    "5": (18.97, 23.08),
+    "6": (22.56, 28.21),
+    "7": (26.67, 33.33),
+    "8A": (28.21, 35.90),
+    "FY1": (18.46, 21.54),
+    "SHO": (23.08, 30.77),
+    "SPR": (33.33, 43.59),
+    "CONS": (48.72, 71.79),
+    "GP": (46.15, 61.54)
 }
 
 ethnicities = {
@@ -190,9 +191,9 @@ for emp in range(1, NUMBER_OF_EMPLOYEES+1):
     division = random.choice(list(divisions.keys()))
     ward = random.choice(divisions[division])
     grade = bands[role]
-    salary = random.randint(
-        salary_range[grade][0],
-        salary_range[grade][1]
+    rate = random.uniform(
+        rate_range[grade][0],
+        rate_range[grade][1]
     )
     hire_date = faker.date_between(start_date='-10y', end_date='today')
     contract_start = hire_date + relativedelta(weeks=random.randint(4, 6))
@@ -205,7 +206,7 @@ for emp in range(1, NUMBER_OF_EMPLOYEES+1):
     profile_date = hire_date + relativedelta(weeks=3)
 
     rows.append({
-        "emp_id": f"EMP{emp:04d}",
+        "emp_id" : f"EMP{emp:04d}-{filename_timestamp}",
         "first_name": faker.first_name(),
         "last_name": faker.last_name(),
         "email": faker.email(),
@@ -221,7 +222,7 @@ for emp in range(1, NUMBER_OF_EMPLOYEES+1):
         "role": role,
         "division": division,
         "grade": grade,
-        "salary": salary,
+        "hourly_rate": round(rate,2),
         "hire_date": hire_date,
         "contract_start": contract_start,
         "weekly_hours": weekly_hours,
