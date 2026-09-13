@@ -12,4 +12,7 @@ python3 "${LOGFILE}/python_scripts/main.py"
 # Move the generated data into the raw folder
 mv "${LOGFILE}"/*.csv "${LOGFILE}/raw"
 
-echo "Data moved Successfully"
+echo "Data moved successfully to raw folder"
+
+# Run script to load data
+python3 "${LOGFILE}/python_scripts/load.py"
